@@ -1,0 +1,23 @@
+page-message-list{
+    .list-md ion-item-sliding{
+        border-bottom:  1px solid rgba(0,0,0,0.23)
+     }
+
+     signature-pad {
+      canvas {
+        border: dashed 1px #cccccc;
+      //   width: 100%; height: 200px;
+      }
+    }
+
+     .img-confirmed{
+      width: 100%;
+      max-width: 35px;
+      height: 35px;
+      float: right;
+      right: 20px;
+     }
+}
+// signature-pad > canvas{
+//     width:100%!important;
+// } 

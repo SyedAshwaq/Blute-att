@@ -1,0 +1,69 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+        	<span ion-text>Tasks View</span>
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+  
+  <ion-content padding >
+        <!-- <ion-item>
+            <ion-label>
+                    Customer: {{task.customername}}
+              </ion-label>
+        </ion-item> -->
+        <ion-grid *ngIf="!showdiv">
+        <ion-item>
+            <ion-label>
+                    Product: {{vtask.product_name}}
+              </ion-label>
+        </ion-item>
+        <ion-item>
+              <ion-label>
+                    Quantity: {{vtask.quantity}}
+              </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+                Comments: {{vtask.comments}}
+          </ion-label>
+        </ion-item>
+    </ion-grid>
+    <ion-grid *ngIf="showdiv">
+        <ion-item>
+            <ion-label>
+                    Product: Multiple selection
+              </ion-label>
+        </ion-item>
+        <ion-item>
+              <ion-label>
+                    Quantity: Multiple selection
+              </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+                Comments: Multiple selection
+          </ion-label>
+        </ion-item>
+    </ion-grid>
+      <ion-item>
+            <signature-pad [options]="signaturePadOptions"  id="signatureCanvas"></signature-pad>
+      </ion-item>
+  
+  <ion-grid>
+    <ion-row>
+      <ion-col col-4>
+  <button ion-button full color="danger" (click)="drawCancel()">Back</button>
+      </ion-col>
+      <ion-col col-4>
+  <button ion-button full color="light" (click)="drawClear()">Clear</button>
+      </ion-col>
+      <ion-col col-4>
+  <button ion-button full color="secondary" (click)="updateTask()">Done</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </ion-content>

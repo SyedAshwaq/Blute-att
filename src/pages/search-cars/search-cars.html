@@ -1,0 +1,181 @@
+<!-- -->
+<ion-header class="animated fadeIn no-shadow">
+  <ion-navbar class="no-border" color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      <div ion-text class="icon-title text-white"></div>
+      <span ion-text>Expenses</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<!-- <ion-content padding class="search-cars common-bg">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col col-12>
+        
+        <h6 ion-text no-margin color="primary" class="marginB-16px">
+          Pick-up / Drop-off
+        </h6>
+        <ion-card no-margin margin-bottom class="full-width">
+          <ion-item tappable (click)="choosePlace('from')" class="border-bottom">
+            <ion-icon name="pin" color="primary" item-left></ion-icon>
+            <span ion-text>{{ search.pickup }}</span>
+          </ion-item>
+          <ion-item tappable (click)="choosePlace('to')">
+            <ion-icon name="pin" color="primary" item-left></ion-icon>
+            <span ion-text>{{ search.dropOff }}</span>
+          </ion-item>
+        </ion-card>
+
+       
+        <ion-card no-margin margin-bottom class="full-width">
+          <ion-item class="border-bottom">
+            <ion-icon name="md-calendar" color="primary" item-left></ion-icon>
+            <ion-datetime class="no-pl" ion-text displayFormat="DD/MM/YYYY h:mm A" pickerFormat="DD/MM/YYYY h:mm A" [(ngModel)]="search.from"></ion-datetime>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="md-calendar" color="primary" item-left></ion-icon>
+            <ion-datetime class="no-pl" ion-text displayFormat="DD/MM/YYYY h:mm A" pickerFormat="DD/MM/YYYY h:mm A" [(ngModel)]="search.to"></ion-datetime>
+          </ion-item>
+        </ion-card>
+
+        <hr>
+
+        <h6 ion-text color="primary">
+          Make:
+        </h6>
+        <ion-card no-margin margin-bottom class="full-width">
+          <ion-item>
+            <ion-label ion-text color="primary">One or more:</ion-label>
+            <ion-select [(ngModel)]="toppings" multiple="true" cancelText="Cancel" okText="OK">
+              <ion-option value="audi" selected="true">Audi</ion-option>
+              <ion-option value="bmw">BMW</ion-option>
+              <ion-option value="chevrolet" selected="true">Chevrolet</ion-option>
+              <ion-option value="dodge">Dodge</ion-option>
+              <ion-option value="fiat">FIAT</ion-option>
+              <ion-option value="ford">Ford</ion-option>
+              <ion-option value="honda">Honda</ion-option>
+              <ion-option value="toyota">Toyota</ion-option>
+              <ion-option value="volvo">Volvo</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-card>
+
+        <button ion-button icon-start block no-margin color="primary" class="round" tappable (click)="doSearch()">
+          <ion-icon name="search"></ion-icon> Search
+        </button>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content> -->
+<ion-content padding class="common-bg">
+<ion-card>
+  <ion-card-header (click)="ViewForm()">
+    Expense
+  </ion-card-header>
+  <ion-card-content *ngIf="ShowxpenseForm">
+      <form [formGroup]="xpenseForm">
+          <ion-item>
+            <ion-label>Expense</ion-label>
+          <ion-select formControlName="expense_type">
+            <!-- <ion-option value="PARKING">Parking</ion-option>
+            <ion-option value="PETROL">Petrol</ion-option>
+            <ion-option value="TOLL">Toll</ion-option>
+            <ion-option value="MOBILE_CHARGES">Mobile Charges</ion-option>
+            <ion-option value="NIGHT_SHIFT_CHARGES">Night Shift Charges</ion-option>
+            <ion-option value="PUBLIC_TRANSPORT_CHARGES">Public Transport Charges</ion-option>
+            <ion-option value="OTHERS">Others</ion-option> -->
+          <ion-option [value] = "global" *ngFor="let global of globalconfs;">
+            {{global.expense_type}}
+            <!-- <p style="display: none"> {{global}}</p> -->
+          </ion-option>
+          </ion-select>
+        </ion-item>
+          <ion-item>
+            <ion-label floating>Bill Number</ion-label>
+            <ion-input type="text" formControlName="bill_number"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label floating>Amount</ion-label>
+              <ion-input type="number" formControlName="amount"></ion-input>
+            </ion-item>
+            
+              <ion-item>
+                  <ion-label floating>Date</ion-label>
+                  <ion-datetime displayFormat="DD-MM-YYYY" formControlName="bill_date"></ion-datetime>
+                </ion-item>
+                <ion-item>
+                  <!-- </div> -->
+                  <input type="file"  (change)="setFileData($event)" accept="image/*"/>
+                  </ion-item>
+                  <!-- </div> -->
+                    <!-- <p>{{imageURI}}</p>
+                    <button ion-button color="secondary" (click)="getImage()">Get Image</button>
+                  </ion-item>
+                  <ion-item>
+                    <h4>Image Preview</h4>
+                    <img src="{{imageFileName}}" *ngIf="imageFileName" alt="Ionic File" width="300" />
+                  </ion-item> -->
+                  <!-- <ion-item>
+                    <button ion-button (click)="uploadFile()">Upload</button>
+                  </ion-item> -->
+                  <button float-right ion-button type="submit" (click)="saveExpenses();ShowxpenseForm=false" [disabled]="!xpenseForm.valid" *ngIf="Savebtn">Submit</button>
+                  <button float-right ion-button type="submit" (click)="updateExpenses()" [disabled]="!xpenseForm.valid" *ngIf="Updatebtn">Update</button>
+              </form>
+  </ion-card-content>
+</ion-card>
+
+ <ion-card> 
+    <ion-card-header>
+            <span (click)="showExpenseList()">Expenses List </span>
+          </ion-card-header>
+<div *ngIf="viewExpenseList">
+  <ion-list *ngFor="let expense of expenses;let i = index" margin-top style="border-bottom: 1px solid rgba(0, 0, 0, 0.23);">
+    <ion-item-sliding #item>
+            <ion-item>
+              <ion-row (click)="showexpenseInfo(i,expense)">
+                  <ion-col width-50 offset-25>
+                      <span style="margin-top: -0.3rem;margin: 2px 0;font-size: 1.9rem;font-weight: 500;line-height: 1.2;" style="padding-left: 16px;"><strong>Expense Type:{{expense.globalconf.expense_type}}</strong></span>
+                    </ion-col>
+              </ion-row>
+              
+              <ion-grid *ngIf="ExpenseInfo[i]">
+                  <ion-row>
+                      <ion-col width-100>
+                        <ion-list>
+                            <ion-item class="pl-50">
+                                <strong>Type:</strong> {{expense.globalconf.expense_type}}
+                            </ion-item>
+                            <ion-item class="pl-50">
+                                <strong>Bill Number:</strong> {{expense.bill_number}}
+                            </ion-item>
+                            <ion-item class="pl-50">
+                                <strong>Amount:</strong> {{expense.amount}}
+                              </ion-item>
+                              <ion-item class="pl-50">
+                                <strong>Date:</strong> {{expense.bill_date}}
+                            </ion-item>
+                            <ion-item class="pl-50">
+                              <img src="{{expense.imgsrc}}">
+                          </ion-item>
+                        </ion-list>
+                      </ion-col>
+                    </ion-row>
+            </ion-grid>
+          </ion-item>
+          <ion-item-options side="left">
+              <button ion-button (click)="editExpenses(expense);share(item)">Edit</button>
+            </ion-item-options>
+          </ion-item-sliding>
+</ion-list>
+</div>
+</ion-card>
+</ion-content>
+<ion-footer>
+
+
+</ion-footer>

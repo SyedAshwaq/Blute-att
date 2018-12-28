@@ -1,0 +1,353 @@
+<ion-header class="animated fadeIn no-shadow">
+    <ion-navbar class="no-border" color="primary">
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>
+        <div ion-text class="icon-title text-white"></div>
+        <span ion-text>Tasks</span>
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
+
+<ion-content padding class="common-bg">
+    <ion-fab top right style="margin-right:1em;">
+        <button (click)="viewTaskForm()" ion-fab><h1 style="margin-top:.35em">+</h1></button>
+      </ion-fab>
+<div *ngIf="showList">
+  <form [formGroup]="taskForm">
+      <!-- <div class="list">
+          <label class="item item-input item-floating-label">
+            <span class="input-label">First Name</span>
+            <input type="text" placeholder="First Name">
+          </label>
+        </div> -->
+    <!-- <ion-item>
+      <ion-label floating>Assignee</ion-label>
+      <ion-input type="text" formControlName="assignee"></ion-input>
+    </ion-item> -->
+    <!-- <ion-item>
+    <ion-label floating>ChallanId</ion-label>
+    <ion-input type="text" formControlName="challanid"></ion-input>
+  </ion-item> -->
+<!-- <ion-item>
+  <ion-label>Created By</ion-label>
+  <ion-input type="text" formControlName="createdBy"></ion-input>
+</ion-item>
+<ion-item>
+    <ion-label>Created Date</ion-label>
+    <ion-input type="text" formControlName="createdDate"></ion-input>
+  </ion-item> -->
+  <ion-item>
+    <!-- <ion-label floating>Customer Name</ion-label>
+    <ion-input type="text" formControlName="customer_name"></ion-input> -->
+    <ion-searchbar (ionInput)="getCustomers($event)" placeholder="Customer Name" formControlName="customername"></ion-searchbar>
+    <ion-list *ngIf="showCustomerList">
+      <ion-item *ngFor="let customer of customerList">
+        <span (click)="selectCustomerName(customer)" style="cursor: pointer;">
+            {{ customer.customer_name }}
+        </span>
+      </ion-item>
+    </ion-list>
+  </ion-item>
+  <!-- <ion-item>
+    <ion-label floating>Customer Contact</ion-label>
+    <ion-input type="text" formControlName="customer_contact"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label floating>Customer Id</ion-label>
+    <ion-input type="text" formControlName="customer_id"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label floating>Customer Sign Link</ion-label>
+    <ion-input type="text" formControlName="customer_sign_link"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label floating>Customer Sign Time</ion-label>
+    <ion-input type="text" formControlName="customer_sign_time"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label floating>Expected Time</ion-label>
+    <ion-input type="text" formControlName="expected_time"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label>Id</ion-label>
+    <ion-input type="text" formControlName="id"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label floating>Instructions</ion-label>
+    <ion-input type="text" formControlName="instructions"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label>Last Modified By</ion-label>
+    <ion-input type="text" formControlName="lastModifiedBy"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Last Modified Date</ion-label>
+    <ion-input type="text" formControlName="lastModifiedDate"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label floating>Location</ion-label>
+    <ion-input type="text" formControlName="location"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label floating>Order Id</ion-label>
+    <ion-input type="text" formControlName="orderid"></ion-input>
+  </ion-item> -->
+  <ion-item>
+    <!-- <ion-label floating>Product Name</ion-label>
+    <ion-input type="text" formControlName="product_name"></ion-input> -->
+    <ion-searchbar (ionInput)="getProducts($event)" placeholder="Product Name" formControlName="product_name"></ion-searchbar>
+    <ion-list *ngIf="showProductList">
+      <ion-item *ngFor="let product of productList">
+            <span (click)="selectProductName(product)" style="cursor: pointer;">
+                {{ product.productdesc }}
+            </span>
+      </ion-item>
+    </ion-list>
+  </ion-item>
+  <ion-item>
+    <ion-label floating>Quantity</ion-label>
+    <ion-input type="text" formControlName="quantity"></ion-input>
+  </ion-item>
+  <!-- <ion-item>
+    <ion-label floating>Route</ion-label>
+    <ion-input type="text" formControlName="route"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label floating>Status</ion-label>
+    <ion-input type="text" formControlName="status"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label floating>Task Sequence</ion-label>
+    <ion-input type="text" formControlName="task_seq"></ion-input>
+  </ion-item> -->
+  <!-- <ion-item>
+    <ion-label floating>Task Type</ion-label>
+    <ion-input type="text" formControlName="task_type"></ion-input>
+  </ion-item> -->
+  <ion-item>
+    <ion-label floating>Comment</ion-label>
+    <ion-input type="text" formControlName="comments"></ion-input>
+  </ion-item>
+    <button float-right ion-button type="submit" (click)="updateTask()" [disabled]="validateUpdate" *ngIf="Updatebtn">Update</button>
+    <button float-right ion-button type="submit" (click)="saveTask()" [disabled]="!taskForm.valid" *ngIf="Savebtn">Submit</button>
+  </form>
+</div>
+
+
+
+  
+  
+
+
+
+<!-- <ion-list *ngFor="let task of tasks; let i = index" margin-top>
+    <ion-item-sliding #item>
+      <ion-item>
+          <ion-row (click)="showOrderInfo(i,task)">
+              <ion-col width-50 offset-25>
+                  <span style="margin-top: -0.3rem;margin: 2px 0;font-size: 1.9rem;font-weight: 500;line-height: 1.2;" style="padding-left: 16px;">Order: {{task.orderid}}</span>
+                  
+                </ion-col>
+          </ion-row>
+          <ion-grid *ngIf="OrderInfo[i]">
+              <h3 class="location text-dark" style="padding-left: 16px;font-size: 22px;">Order Info</h3>
+              <ion-row>
+                  <ion-col width-100>
+                    <ion-list>
+                            <ion-item>
+                                <strong>Expected Time:</strong> {{task.expected_time}}
+                            </ion-item>
+                            <ion-item>
+                            <strong>Instructions:</strong> {{task.instructions}}
+                             </ion-item>
+                             <ion-item>
+                                <strong>Location:</strong> {{task.location}}
+                            </ion-item>
+                    </ion-list>
+                  </ion-col>
+                </ion-row>
+      
+      
+         
+          <ion-row (click)="showCustomerInfo(i)">
+              <ion-col width-50 offset-25>
+                  <h3 class="location text-dark" style="padding-left: 16px;font-size: 22px;">Challan: {{task.challanid}}</h3>
+                  
+              </ion-col>
+          </ion-row>
+          <ion-grid *ngIf="CustomerInfo[i]">
+              <h3 class="location text-dark">Customer Info</h3>
+              <ion-row>
+                  <ion-col width-100>
+                      <ion-list>
+                          <ion-item>
+                              <strong>Assignee:</strong> {{task.assignee}}
+                          </ion-item>
+                           <ion-item>
+                              <strong>Comments:</strong> {{task.comments}}
+                          </ion-item>
+                          <ion-item>
+                              <strong>Customer Contact:</strong> {{task.customer_contact}}
+                          </ion-item>
+                          <ion-item>
+                              <strong>Customer Id:</strong> {{task.customer_id}}
+                          </ion-item>
+                          <ion-item>
+                              <strong>Customer Name:</strong> {{task.customer_name}}
+                          </ion-item>
+                          <ion-item>
+                              <strong>Customer Sign Link:</strong> {{task.customer_sign_link}}
+                          </ion-item>
+                          <ion-item>
+                              <strong>Customer Sign Time:</strong> {{task.customer_sign_time}}
+                          </ion-item>
+                      </ion-list>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+          <ion-row (click)="showProductInfo(i)">
+              <ion-col width-50 offset-25>
+                  <h3 class="location text-dark" style="padding-left: 16px;font-size: 22px;">Product: {{task.product_name}}</h3>
+              </ion-col>
+          </ion-row>
+          <ion-grid *ngIf="ProductInfo[i]">
+              <h3 class="location text-dark">Product Info</h3>
+              <ion-row>
+                  <ion-col width-100>
+                    <ion-list>
+                        <ion-item>
+                            <strong>Quantity Route:</strong> {{task.quantityroute}}
+                        </ion-item>
+                        <ion-item>
+                            <strong>Status:</strong> {{task.status}}
+                        </ion-item>
+                        <ion-item>
+                            <strong>Task Sequence:</strong> {{task.task_seq}}
+                        </ion-item>
+                        <ion-item>
+                            <strong>Task Type:</strong> {{task.task_type}}
+                        </ion-item>
+                    </ion-list>
+                  </ion-col>
+                </ion-row>
+          </ion-grid>
+        </ion-grid>
+      </ion-item>
+      <ion-item-options side="left">
+        <button ion-button  (click)="editTask(task)">Edit</button>
+      </ion-item-options>
+  
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="deleteTask(task)">Delete</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list> -->
+
+
+
+  <ion-list *ngFor="let task of tasks; let i = index" margin-top>
+    <ion-item-sliding #item>
+      <ion-item>
+          <ion-row (click)="showOrderInfo(i,task)">
+              <ion-col width-50 offset-25>
+                  <span style="margin-top: -0.3rem;margin: 2px 0;font-size: 1.9rem;font-weight: 500;line-height: 1.2;" style="padding-left: 16px;">Task Info</span>
+                  <!-- <span float-right><ion-icon name="trash" (click)="deleteTask(task)"></ion-icon></span> -->
+                </ion-col>
+          </ion-row>
+          <ion-grid *ngIf="OrderInfo[i]">
+              <!-- <h3 class="location text-dark" style="padding-left: 16px;font-size: 22px;">Order Info</h3> -->
+              <ion-row>
+                  <ion-col width-100>
+                    <ion-list>
+                            <ion-item>
+                                <strong>Customer Name:</strong> {{task.customername}}
+                            </ion-item>
+                            <ion-item>
+                                <strong>Product Name:</strong> {{task.product_name}}
+                             </ion-item>
+                             <ion-item>
+                                <strong>Quantity:</strong> {{task.quantity}}
+                            </ion-item>
+                            <ion-item>
+                                <strong>Comments:</strong> {{task.comments}}
+                            </ion-item>
+                    </ion-list>
+                  </ion-col>
+                </ion-row>
+          <!-- <ion-row (click)="showCustomerInfo(i)">
+              <ion-col width-50 offset-25>
+                  <h3 class="location text-dark" style="padding-left: 16px;font-size: 22px;">Challan: {{task.challanid}}</h3>
+                  
+              </ion-col>
+          </ion-row>
+          <ion-grid *ngIf="CustomerInfo[i]">
+              <h3 class="location text-dark">Customer Info</h3>
+              <ion-row>
+                  <ion-col width-100>
+                      <ion-list>
+                          <ion-item>
+                              <strong>Assignee:</strong> {{task.assignee}}
+                          </ion-item>
+                           <ion-item>
+                              <strong>Comments:</strong> {{task.comments}}
+                          </ion-item>
+                          <ion-item>
+                              <strong>Customer Contact:</strong> {{task.customer_contact}}
+                          </ion-item>
+                          <ion-item>
+                              <strong>Customer Id:</strong> {{task.customer_id}}
+                          </ion-item>
+                          <ion-item>
+                              <strong>Customer Name:</strong> {{task.customer_name}}
+                          </ion-item>
+                          <ion-item>
+                              <strong>Customer Sign Link:</strong> {{task.customer_sign_link}}
+                          </ion-item>
+                          <ion-item>
+                              <strong>Customer Sign Time:</strong> {{task.customer_sign_time}}
+                          </ion-item>
+                      </ion-list>
+                  </ion-col>
+              </ion-row>
+          </ion-grid>
+          <ion-row (click)="showProductInfo(i)">
+              <ion-col width-50 offset-25>
+                  <h3 class="location text-dark" style="padding-left: 16px;font-size: 22px;">Product: {{task.product_name}}</h3>
+              </ion-col>
+          </ion-row>
+          <ion-grid *ngIf="ProductInfo[i]">
+              <h3 class="location text-dark">Product Info</h3>
+              <ion-row>
+                  <ion-col width-100>
+                    <ion-list>
+                        <ion-item>
+                            <strong>Quantity Route:</strong> {{task.quantityroute}}
+                        </ion-item>
+                        <ion-item>
+                            <strong>Status:</strong> {{task.status}}
+                        </ion-item>
+                        <ion-item>
+                            <strong>Task Sequence:</strong> {{task.task_seq}}
+                        </ion-item>
+                        <ion-item>
+                            <strong>Task Type:</strong> {{task.task_type}}
+                        </ion-item>
+                    </ion-list>
+                  </ion-col>
+                </ion-row>
+          </ion-grid> -->
+        </ion-grid>
+      </ion-item>
+      <ion-item-options side="left">
+        <button ion-button  (click)="editTask(task)">Edit</button>
+      </ion-item-options>
+  
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="deleteTask(task)">Delete</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+</ion-content>

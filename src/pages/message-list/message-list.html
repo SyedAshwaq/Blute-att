@@ -1,0 +1,266 @@
+
+<ion-header class="animated fadeIn no-shadow">
+    <ion-navbar class="no-border" color="primary">
+      <button ion-button menuToggle (click)="setuserInfo()">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>
+        <div ion-text class="icon-title text-white"></div>
+        <span ion-text>Tasks View</span>
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
+
+<ion-content padding class="common-bg">
+
+         <ion-item>
+           <ion-label><u> <strong>{{customer.customerName}}</strong></u></ion-label>
+         </ion-item>
+
+                <ion-card *ngIf="showList">
+                        <ion-card-header>
+                            Task Creation <button float-right ion-button round style="padding: 0px 15px;font-size: 0.7em;" (click)="CloseForm()">x</button>
+                        </ion-card-header>
+                        <ion-card-content>
+                                <form [formGroup]="taskForm">
+                                        <!-- <ion-item>
+                                          <ion-searchbar (ionInput)="getCustomers($event)" placeholder="Customer Name" formControlName="customername"></ion-searchbar>
+                                          <ion-list *ngIf="showCustomerList">
+                                            <ion-item *ngFor="let customer of customerList">
+                                              <span (click)="selectCustomerName(customer)" style="cursor: pointer;">
+                                                  {{ customer.customer_name }}
+                                              </span>
+                                            </ion-item>
+                                          </ion-list>
+                                        </ion-item> -->
+                                        <ion-item>
+                                          <ion-searchbar (ionInput)="getProducts($event)" placeholder="Product Name" formControlName="product_name"></ion-searchbar>
+                                          <ion-list *ngIf="showProductList">
+                                            <ion-item *ngFor="let product of productListnew; let i = index">
+                                                  <span (click)="selectProductName(product)" style="cursor: pointer;">
+                                                      {{ product.pdvalue }}
+                                                  </span>
+                                            </ion-item>
+                                          </ion-list>
+                                        </ion-item>
+                                        <ion-item>
+                                          <ion-label floating>Quantity</ion-label>
+                                          <ion-input type="Number" formControlName="quantity" required></ion-input>
+                                          <div style="color:red"  *ngIf='errormessage'   >
+                                          Give Value Above Zero
+                                         </div>
+                                        </ion-item>
+                                        <ion-item>
+                                          <ion-label floating>Comment</ion-label>
+                                          <ion-input type="text" formControlName="comments"></ion-input>
+                                        </ion-item>
+                                        <ion-input type="text" formControlName="task_type" [hidden]="true" ></ion-input>
+                                        <ion-input type="text" formControlName="orderid" [hidden]="true" ></ion-input>
+                                        <ion-input type="text" formControlName="challanid" [hidden]="true" ></ion-input>
+                                        <ion-input type="text" formControlName="status" [hidden]="true" ></ion-input>
+                                          <button float-right ion-button type="submit" (click)="saveTask()" [disabled]="!taskForm.valid" *ngIf="Savebtn">Submit</button>
+                                </form>
+                        </ion-card-content>
+                </ion-card>
+<ion-card *ngIf="showDeliveryEditList">
+  <ion-card-header>
+    Edit Delivery <button float-right ion-button round style="padding: 0px 15px;font-size: 0.7em;" (click)="CloseDeliveryList()">x</button>
+  </ion-card-header>
+  <ion-card-content>
+    <form [formGroup]="taskForm">
+        
+        <ion-item>
+          <ion-label floating>Comments</ion-label>
+          <ion-input type="text" formControlName="comments" [hidden]="true"></ion-input>
+        </ion-item>
+        <ion-input type="text" formControlName="customername" [hidden]="true"></ion-input>
+        <ion-input type="text" formControlName="customerid" [hidden]="true"></ion-input>
+        <ion-input type="text" formControlName="product_name" [hidden]="true"></ion-input>
+        <ion-input type="text" formControlName="quantity" [hidden]="true"></ion-input>
+        <ion-input type="text" formControlName="task_type" [hidden]="true" ></ion-input>
+        <ion-input type="text" formControlName="orderid" [hidden]="true" ></ion-input>
+        <ion-input type="text" formControlName="challanid" [hidden]="true" ></ion-input>
+        <ion-input type="text" formControlName="status" [hidden]="true" ></ion-input>
+        <ion-input type="text" formControlName="task_seq" [hidden]="true"></ion-input>
+        <ion-input type="text" formControlName="associatedtrip" [hidden]="true"></ion-input>
+        <ion-input type="text" formControlName="location" [hidden]="true"></ion-input>
+        <ion-input type="text" formControlName="assignee" [hidden]="true"></ion-input>
+          <button float-right ion-button type="submit" (click)="updateTask()" [disabled]="validateUpdate" *ngIf="Updatebtn">Update</button>
+</form>
+  </ion-card-content>
+</ion-card>
+                <ion-card>
+                        <ion-card-header>
+                        <input type="checkbox"  *ngIf = "deliverySelectAll" (change)="SelectAll(DeliveryTasks)">
+                                Delivery
+                              </ion-card-header>
+                          <ion-list *ngFor="let task of DeliveryTasks; let i = index" margin-top>
+                                <ion-item-sliding *ngIf='task.isVisible' #item>
+                                    <ion-item>
+                                        <ion-row>
+                                            <ion-col width-50 offset-25>
+                                                <span style="margin-top: -0.3rem;margin: 2px 0;font-size: 1.9rem;font-weight: 500;line-height: 1.2;" style="padding-left: 16px;">
+                                                        <input type="checkbox" [checked] = 'task.isChecked' *ngIf='task.ShowCheck' (change)="addItems(task)">
+
+                                                        <ion-icon class="cus-check-icon" float-right name="checkmark-circle" *ngIf='task.ShowImage'></ion-icon>
+                                                        <span (click)="showOrderInfo(i,task)"><strong>Order # :{{task.orderid}}</strong></span>
+                                                      </span>
+                                              </ion-col>
+                                        </ion-row>
+                                        <ion-grid *ngIf="task.OrderInfo" >
+                                            <ion-row>
+                                                <ion-col width-100>
+                                                  <ion-list>
+                                                            <ion-item class="pl-50">
+                                                                <strong>Challan Number:</strong> {{task.challanid}}
+                                                             </ion-item>
+                                                            <ion-item class="pl-50">
+                                                                <strong>Order Number:</strong> {{task.orderid}}
+                                                            </ion-item>
+                                                          <ion-item class="pl-50">
+                                                              <strong>Product Name:</strong> {{task.product_name}}
+                                                           </ion-item>
+                                                           <ion-item class="pl-50">
+                                                              <strong>Quantity:</strong> {{task.quantity}}
+                                                          </ion-item>
+                                                          <ion-item class="pl-50">
+                                                            <strong>Instructions:</strong> {{task.instructions}}
+                                                        </ion-item>
+                                                          <ion-item class="pl-50">
+                                                              <!-- <strong>Comments:</strong>  -->
+                                                              <ion-input type="text" placeholder="Comments" [(ngModel)]="task.comments"></ion-input>
+                                                          </ion-item>
+                                                          <ion-item>
+                                                            <button ion-button full (click)="saveDeli(task)">Save</button>
+                                                          </ion-item>
+                                                  </ion-list>
+                                                </ion-col>
+                                              </ion-row>
+                                      </ion-grid>
+                                    </ion-item>
+                                    <ion-item-options *ngIf='task.isEditable'side="left" #slidingItem1>
+                                      <button ion-button (click)="editTask(task);share(item)">Edit</button>
+                                    </ion-item-options>
+                                </ion-item-sliding>
+                          </ion-list>
+                </ion-card>
+            
+                <ion-card style="margin-bottom:3em">
+                        <ion-card-header>
+                          <input type="checkbox"  *ngIf = "pickupSelectAll" (change)="SelectAll(PickupTasks)">
+                          Pickup 
+                        </ion-card-header>
+                        <ion-card style="margin-top:3em" *ngIf="showEditList">
+                                <ion-card-header>
+                                    Edit Task <button float-right ion-button round style="padding: 0px 15px;font-size: 0.7em;" (click)="CloseEditList()">x</button>
+                                </ion-card-header>
+                                <ion-card-content>
+                                        <form [formGroup]="taskForm">
+                                                <!-- <ion-item>
+                                                  <ion-searchbar (ionInput)="getCustomers($event)" placeholder="Customer Name" formControlName="customername"></ion-searchbar>
+                                                  <ion-list *ngIf="showCustomerList">
+                                                    <ion-item *ngFor="let customer of customerList">
+                                                      <span (click)="selectCustomerName(customer)" style="cursor: pointer;">
+                                                          {{ customer.customer_name }}
+                                                      </span>
+                                                    </ion-item>
+                                                  </ion-list>
+                                                </ion-item> -->
+                                                <ion-item>
+                                                  <ion-searchbar (ionInput)="getProducts($event)" placeholder="Product Name" formControlName="product_name"></ion-searchbar>
+                                                  <ion-list *ngIf="showProductList">
+                                                    <ion-item *ngFor="let product of productListnew; let i = index">
+                                                          <span (click)="selectProductName(product)" style="cursor: pointer;">
+                                                              {{ product.pdvalue }}
+                                                          </span>
+                                                    </ion-item>
+                                                  </ion-list>
+                                                </ion-item>
+                                                <ion-item>
+                                                  <ion-label floating>Quantity</ion-label>
+                                                  <ion-input type="text" formControlName="quantity"></ion-input>
+                                                </ion-item>
+                                                <ion-item>
+                                                  <ion-label floating>Comment</ion-label>
+                                                  <ion-input type="text" formControlName="comments"></ion-input>
+                                                </ion-item>
+                                                <ion-input type="text" formControlName="task_type" [hidden]="true" ></ion-input>
+                                                <ion-input type="text" formControlName="orderid" [hidden]="true" ></ion-input>
+                                                <ion-input type="text" formControlName="challanid" [hidden]="true" ></ion-input>
+                                                <ion-input type="text" formControlName="status" [hidden]="true" ></ion-input>
+                                                <ion-input type="text" formControlName="assignee" [hidden]="true"></ion-input>
+                                                <ion-input type="text" formControlName="customername" [hidden]="true"></ion-input>
+                                                <ion-input type="text" formControlName="customerid" [hidden]="true"></ion-input>
+                                                <ion-input type="text" formControlName="location" [hidden]="true"></ion-input>
+                                                <ion-input type="text" formControlName="associatedtrip" [hidden]="true"></ion-input>
+                                                <ion-input type="text" formControlName="task_seq" [hidden]="true"></ion-input>
+                                                  <button float-right ion-button type="submit" (click)="updateTask()" [disabled]="validateUpdate" *ngIf="Updatebtn">Update</button>
+                                        </form>
+                                </ion-card-content>
+                        </ion-card>
+                        <ion-list *ngFor="let task of PickupTasks; let i = index" margin-top>
+                                <div *ngIf='task.ispickupVisible'>  
+                                <ion-item-sliding  #item>
+                                  <ion-item>
+                                      <ion-row>
+                                          <ion-col width-50 offset-25>
+                                              <span style="margin-top: -0.3rem;margin: 2px 0;font-size: 1.9rem;font-weight: 500;line-height: 1.2;" style="padding-left: 16px;">
+                                                    <input type="checkbox"  *ngIf='task.ShowCheck' [checked] = 'task.isChecked' (change)="addItems(task)">
+                                                <span (click)="showOrderInfo(i,task)"><strong>Task Id: {{task.id}}</strong></span>
+                                               
+                                            </span>
+                                            </ion-col>
+                                            <ion-col>
+                                            </ion-col>
+                                            <ion-col>
+                                                    <ion-icon class="cus-check-icon" float-right name="checkmark-circle" *ngIf='task.ShowImage'></ion-icon>
+                                            </ion-col>
+                                      </ion-row>
+                                      <ion-grid *ngIf="task.OrderInfo">
+                                          <ion-row>
+                                              <ion-col width-100>
+                                                <ion-list>
+                                                        <ion-item class="pl-50">
+                                                            <strong>Customer Name:</strong> {{task.customername}}
+                                                        </ion-item>
+                                                        <ion-item class="pl-50">
+                                                            <strong>Product Name:</strong> {{task.product_name}}
+                                                         </ion-item>
+                                                         <ion-item class="pl-50">
+                                                            <strong>Quantity:</strong> {{task.quantity}}
+                                                        </ion-item>
+                                                        <ion-item class="pl-50">
+                                                            <strong>Instructions:</strong> {{task.instructions}}
+                                                        </ion-item>
+                                                        <ion-item class="pl-50">
+                                                          <strong>Comments:</strong> {{task.comments}}
+                                                      </ion-item>
+                                                </ion-list>
+                                              </ion-col>
+                                            </ion-row>
+                                    </ion-grid>
+                                  </ion-item>
+                               
+                                  <ion-item-options *ngIf='task.isEditable'side="left" #slidingItem1>
+                                    <button ion-button  (click)="editTask(task);share(item)">Edit</button>
+                                  </ion-item-options>
+                                </ion-item-sliding>
+                            </div>
+                        </ion-list>
+                </ion-card>
+
+                <!-- <ion-col>
+                    <button class="cus-sign-maroon" float-right ion-button round style="padding: 0px 15px;" (click)="openSignatureModel()" enabled="isSignature">Signature</button>
+                    <button class="cus-bg-darkpurple" float-right ion-button round style="padding: 0px 15px;" (click)="viewTaskForm()">+ Pickup</button>
+                </ion-col> -->
+
+                    <ion-fab bottom left style="margin-left:1em;">
+        <button class="cus-sign-maroon" (click)="openSignatureModel()"  [disabled]="!isSignature"   ion-fab><span style="margin-top:0;font-size: 1.8rem;">Signature</span></button>
+      </ion-fab>
+
+
+          <ion-fab bottom right style="margin-right:1em;">
+            <button class="cus-bg-darkpurple" (click)="viewTaskForm()" ion-fab><span style="margin-top:0;font-size: 1.8rem;">+ Pickup</span></button>
+          </ion-fab>
+
+    </ion-content>
