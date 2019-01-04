@@ -1,7 +1,7 @@
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import {ErrorHandler, NgModule} from "@angular/core";
-import { ItemPage } from './../pages/item/item';
-import { LogoutPage } from './../pages/logout/logout';
+//import { ItemPage } from './../pages/item/item';
+//import { LogoutPage } from './../pages/logout/logout';
 import {IonicApp, IonicErrorHandler, IonicModule} from "ionic-angular";
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -42,8 +42,8 @@ import { Uid } from '@ionic-native/uid';
   declarations: [
     QuatlaDMSApp,
     SignaturePage,
-    ItemPage,
-    LogoutPage
+  //  ItemPage,
+   // LogoutPage
   ],
   imports: [
     BrowserModule,
@@ -72,8 +72,8 @@ import { Uid } from '@ionic-native/uid';
   entryComponents: [
     QuatlaDMSApp,
     SignaturePage,
-    ItemPage,
-    LogoutPage
+    //ItemPage,
+    //LogoutPage
   ],
   providers: [
     StatusBar,
@@ -91,9 +91,9 @@ import { Uid } from '@ionic-native/uid';
     TaskProvider,
     Geolocation,
     config,
-    LogoutPage,
-    ItemPage,
-    FileTransfer,
+    //LogoutPage,
+    //ItemPage,
+    //FileTransfer,
     LoginService,
     TaskProvider,
     SQLite,
